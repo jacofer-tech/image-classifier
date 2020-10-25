@@ -162,30 +162,13 @@ def predict(image_path, model, top_k, gpu=False):
     '''prob = top_probs.cpu().detach().numpy().tolist()[0]
     idx = top_probs.cpu().detach().numpy().tolist()[0]'''
     
+    idx_to_class = {val: key for key, val in model.class_to_idx.items()}     
     classes = [model.idx_to_class[x] for x in idx]
+
     
     return prob, classes
     
     
-    '''#Add Batch of size 1 to image
-    model_input = image_tensor.unsqueeze(0)
-    
-    #Prob
-    probs = torch.exp(model.forward(model_input))
-    
-    #Top Probs
-    
-    top_probs, top_labs = probs.topk(top_k)
-    top_probs = top_probs.cpu().detach().numpy().tolist()[0] 
-    top_labs = top_labs.cpu().detach().numpy().tolist()[0]
-    
-    #Convert indices to classes
-    idx_to_class = {val: key for key, val in model.class_to_idx.items()}    
-    top_labels = [idx_to_class[lab] for lab in top_labs]
-    top_flowers = [cat_to_name[idx_to_class[lab]] for lab in top_labs]
-    
-    return top_probs, top_labels, top_flowers'''
-
 probs, flowers = predict(image_path, model, top_k)
 print(probs)
 print(flowers)
